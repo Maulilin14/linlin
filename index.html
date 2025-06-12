@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Razones para Amarte</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F8F0E5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .book-title {
+            font-family: 'Dancing Script', cursive;
+        }
+        /* Decoraciones de corazones */
+        .heart {
+            position: absolute;
+            color: #E8A0BF;
+            opacity: 0.2;
+            font-size: 2rem;
+            animation: float 15s infinite linear;
+        }
+        .heart:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; font-size: 3rem; }
+        .heart:nth-child(2) { top: 20%; left: 80%; animation-delay: -5s; font-size: 2rem; }
+        .heart:nth-child(3) { top: 70%; left: 90%; animation-delay: -10s; font-size: 4rem; }
+        .heart:nth-child(4) { top: 80%; left: 15%; animation-delay: -3s; font-size: 2.5rem; }
+        .heart:nth-child(5) { top: 40%; left: 5%; animation-delay: -8s; font-size: 3.5rem; }
+        .heart:nth-child(6) { top: 50%; left: 60%; animation-delay: -12s; font-size: 2rem; }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-120vh) rotate(360deg); }
+        }
+        
+        /* Estilos de la tarjeta */
+        #reason-card {
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            backface-visibility: hidden; /* Evita parpadeos en la animación */
+        }
+        .card-enter {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .card-exit {
+            opacity: 0;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body class="bg-rose-50 text-gray-800">
+
+    <!-- Decoraciones de fondo -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div class="heart">❤</div>
+        <div class="heart">♥</div>
+        <div class="heart">❤</div>
+        <div class="heart">♥</div>
+        <div class="heart">❤</div>
+        <div class="heart">♥</div>
+    </div>
+
+    <div class="w-full max-w-md mx-auto p-4 md:p-8 flex flex-col items-center justify-center min-h-screen text-center z-10">
+        
+        <h1 id="main-title" class="book-title text-4xl md:text-5xl text-rose-500 mb-4 transition-opacity duration-500">100 Razones para Amarte</h1>
+        <h2 id="subtitle" class="book-title text-2xl md:text-3xl text-rose-400 mb-2 transition-opacity duration-500">...y una para irme</h2>
+        <h3 id="nickname" class="book-title text-2xl text-rose-400 mb-8 transition-opacity duration-500">para mi Manchitas</h3>
+
+
+        <!-- La tarjeta interactiva -->
+        <div id="reason-card" class="bg-white rounded-2xl shadow-2xl p-8 md:p-12 w-full min-h-[250px] flex flex-col justify-center items-center relative">
+            <p id="reason-number" class="absolute top-4 left-4 font-semibold text-rose-300 transition-opacity duration-500"></p>
+            <p id="reason-text" class="text-xl md:text-2xl font-semibold text-gray-700"></p>
+        </div>
+
+        <!-- Controles de navegación -->
+        <div class="flex justify-between w-full mt-8">
+            <button id="prev-btn" class="bg-rose-400 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-rose-500 transition-transform transform hover:scale-105 disabled:bg-rose-200 disabled:cursor-not-allowed disabled:transform-none">
+                Anterior
+            </button>
+            <button id="next-btn" class="bg-rose-400 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-rose-500 transition-transform transform hover:scale-105">
+                Siguiente
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reasons = [
+                // 100 Razones para Amarte
+                "Tu sonrisa.", "Tu risa.", "Tu mirada.", "Tu corazón.", "Tu inteligencia.",
+                "Tu compasión.", "Tu fuerza.", "Tu perdón.", "Tu sentido del humor.", "Tu autenticidad.",
+                "Tu amor.", "Tu apoyo.", "Tu comprensión.", "Tu paciencia.", "Tu bondad.",
+                "Tu generosidad.", "Tu empatía.", "Tu sabiduría.", "Tu creatividad.", "Tu pasión.",
+                "Tu dedicación.", "Tu lealtad.", "Tu honestidad.", "Tu integridad.", "Tu humildad.",
+                "Tu gratitud.", "Tu alegría.", "Tu entusiasmo.", "Tu optimismo.", "Tu resiliencia.",
+                "Tu valentía.", "Tu confianza.", "Tu amabilidad.", "Tu gentileza.", "Tu consideración.",
+                "Tu atención.", "Tu escucha.", "Tu comprensión.", "Tu apoyo incondicional.", "Tu amor incondicional.",
+                "Tu capacidad para hacer reír.", "Tu habilidad para escuchar.", "Tu don para hacer sentir especial a los demás.",
+                "Tu pasión por la vida.", "Tu entusiasmo por aprender.", "Tu capacidad para perdonar y olvidar.",
+                "Tu habilidad para mantener la calma en momentos difíciles.", "Tu fuerza en la adversidad.",
+                "Tu resiliencia en el fracaso.", "Tu capacidad para inspirar a otros.", "Tu autenticidad en todo lo que haces.",
+                "Tu integridad en tus acciones.", "Tu compromiso con tus valores.", "Tu pasión por hacer lo que amas.",
+                "Tu capacidad para encontrar la belleza en la vida.", "Tu habilidad para hacer que los demás se sientan valorados.",
+                "Tu don para hacer que los demás se sientan amados.", "Tu capacidad para crear recuerdos inolvidables.",
+                "Tu habilidad para hacer que los demás se sientan especiales.", "Tu amor por la vida.",
+                "Tu sonrisa contagiosa.", "Tu risa alegre.", "Tu mirada brillante.", "Tu corazón lleno de amor.",
+                "Tu inteligencia aguda.", "Tu compasión profunda.", "Tu fuerza interior.", "Tu perdón sincero.",
+                "Tu sentido del humor agudo.", "Tu autenticidad genuina.", "Tu amor incondicional.",
+                "Tu apoyo constante.", "Tu comprensión profunda.", "Tu paciencia infinita.", "Tu bondad sin límites.",
+                "Tu generosidad sin medida.", "Tu empatía profunda.", "Tu sabiduría adquirida.",
+                "Tu creatividad innovadora.", "Tu pasión por la excelencia.", "Tu dedicación a tus metas.",
+                "Tu lealtad a tus seres queridos.", "Tu honestidad en tus palabras.", "Tu integridad en tus acciones.",
+                "Tu humildad en el éxito.", "Tu gratitud por lo que tienes.", "Tu alegría en la vida.",
+                "Tu entusiasmo por el futuro.", "Tu optimismo en la adversidad.", "Tu resiliencia en el fracaso.",
+                "Tu valentía en la incertidumbre.", "Tu confianza en ti mismo.", "Tu amabilidad con los demás.",
+                "Tu gentileza en tus palabras.", "Tu consideración por los sentimientos de los demás.",
+                "Tu atención a los detalles.", "Tu escucha activa.", "Tu comprensión empática.",
+                "Tu apoyo incondicional a tus seres queridos.", "Tu amor puro y verdadero.",
+                // Razón para irme
+                "Ninguna."
+            ];
+
+            let currentIndex = 0;
+
+            const mainTitle = document.getElementById('main-title');
+            const subtitle = document.getElementById('subtitle');
+            const nickname = document.getElementById('nickname');
+            const reasonCard = document.getElementById('reason-card');
+            const reasonNumberEl = document.getElementById('reason-number');
+            const reasonTextEl = document.getElementById('reason-text');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            function updateUI(isInitial = false) {
+                // Lógica de animación
+                if (!isInitial) {
+                    reasonCard.classList.add('card-exit');
+                }
+
+                setTimeout(() => {
+                    // Actualización de títulos para la última razón
+                    if (currentIndex === 100) {
+                        mainTitle.textContent = "La única razón para irme...";
+                        subtitle.style.display = 'none'; // Ocultar subtítulo
+                        nickname.style.display = 'none'; // Ocultar apodo
+                        reasonNumberEl.style.display = 'none'; // Ocultar número
+                        reasonTextEl.classList.add('text-4xl', 'book-title', 'text-rose-500'); // Estilo especial
+                        reasonCard.classList.add('border-2', 'border-rose-400'); // Borde especial
+                    } else {
+                        mainTitle.textContent = "100 Razones para Amarte";
+                        subtitle.style.display = 'block';
+                        nickname.style.display = 'block';
+                        reasonNumberEl.style.display = 'block';
+                        reasonTextEl.classList.remove('text-4xl', 'book-title', 'text-rose-500');
+                        reasonCard.classList.remove('border-2', 'border-rose-400');
+                        reasonNumberEl.textContent = `Razón ${currentIndex + 1} / 100`;
+                    }
+                    
+                    reasonTextEl.textContent = reasons[currentIndex];
+
+                    // Actualizar estado de los botones
+                    prevBtn.disabled = currentIndex === 0;
+                    nextBtn.disabled = currentIndex === reasons.length - 1;
+
+                    // Animación de entrada
+                    reasonCard.classList.remove('card-exit');
+                    reasonCard.classList.add('card-enter');
+                    setTimeout(() => reasonCard.classList.remove('card-enter'), 10);
+
+                }, isInitial ? 0 : 300); // No hay delay en la carga inicial
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < reasons.length - 1) {
+                    currentIndex++;
+                    updateUI();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateUI();
+                }
+            });
+
+            // Carga inicial
+            updateUI(true);
+        });
+    </script>
+</body>
+</html>
